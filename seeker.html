@@ -38,6 +38,14 @@
         const form5 = document.getElementById('form5');
         const input = document.getElementById('input');
         const messages = document.getElementById('messages');
+
+        async function countdown() {
+            for (let i = 60; i >= 1; i--) {
+                socket.emit('silent message', (i));
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            socket.emit('announcement', ('A hunyó indul! Vigyázzatok a picsátokra!'))
+            }
         
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -110,9 +118,7 @@
         form5.addEventListener('submit', (e) => {
             e.preventDefault();
             socket.emit('announcement', ("Visszaszámlálás indul!"))
-            for (let i = 60; i >= 1; i--) {
-                socket.emit('silent message', (i));
-            }
+            countdown()
 
             document.getElementById("szam").disabled = true
             setTimeout(() => {
