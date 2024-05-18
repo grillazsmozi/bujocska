@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Socket.IO chat</title>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>Hunyó kezelő felület</h1>
+    <form id="form">
+        <input type="text" id="input">
+        <button id="kieses">Kiesett!</button>
+    </form>
+
+    <form id="form2">
+        <button id="jelez">JELEZZ</button>
+    </form>
+    <form id="form3">
+        <button id="felad">FELADÁS</button>
+    </form>
+    <form id="form4">
+        <button id="vissza">VISSZA A KEZDŐPONTRA</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io('http://localhost:3000/');
+        const form = document.getElementById('form');
+        const form2 = document.getElementById('form2');
+        const form3 = document.getElementById('form3');
+        const form4 = document.getElementById('form4');
+        const input = document.getElementById('input');
+        const messages = document.getElementById('messages');
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (input.value) {
+                if (input.value === "informacio") {
+                    socket.emit('announcement', (`Figyelem! Most elmondom az információkat!`));
+                    setTimeout(() => {
+                    socket.emit('chat message', ('A készítő: OFISÖL'));
+                    
+                    setTimeout(() => {
+                    socket.emit('chat message', ('A bújásra 60 másodpercetek lesz. A hunyónak meg kell nyomnia a kezdés gombot.'));
+                    
+                    setTimeout(() => {
+                    socket.emit('chat message', ('Ilyenkor elindul a számolás. A telefonotokon követhetitek. Ha elindul a fogó, üzenetet kaptok.'));
+                    setTimeout(() => {
+                    socket.emit('chat message', ('Ha valaki kiesik (meg lett találva) egy másik hang játszódik le és kaptok üzenetet.'));
+                    setTimeout(() => {
+                    socket.emit('chat message', ('Ha mindenki megvan, értesítünk a gyülekezésről.'));
+                    setTimeout(() => {
+                    socket.emit('chat message', ('Ha a fogó feladja, vissza kell térni a megbeszélt találkozóhelyre.'));
+                    setTimeout(() => {
+                    socket.emit('chat message', ('A chat-et a fogó nem látja, de mindenki más igen. Nincs privát üzengetési lehetőség.'));
+                    
+                    setTimeout(() => {
+                    socket.emit('chat message', ('Jó játékot kívánunk!'));
+                    setTimeout(() => {
+                        socket.emit('announcement', ('INFORMÁCIÓK VÉGE'));
+                    }, 3000);
+                    }, 3000);
+                    }, 3000);
+                    }, 3000);
+                    }, 3000);
+                    }, 3000);
+                    }, 3000);
+                    }, 3000);
+                    }, 3000);
+                    input.value = '';
+                } else {
+                    socket.emit('announcement', (`${input.value} KIESETT!`));
+                    input.value = '';
+                }
+            }
+        });
+
+        form2.addEventListener('submit', (e) => {
+            e.preventDefault();
+            socket.emit('announcement', (`A hunyó jelzést kért. Minenki adjon ki egy hangot!`));
+            document.getElementById("jelez").disabled = true
+            setTimeout(() => {
+                document.getElementById("jelez").disabled = false
+            }, 60000)
+        });
+        form3.addEventListener('submit', (e) => {
+            e.preventDefault();
+            socket.emit('announcement', (`A hunyó feladta. Mindenki térjen vissza a kezdőpontra kötelezően!`));
+            document.getElementById("felad").disabled = true
+            setTimeout(() => {
+                document.getElementById("felad").disabled = false
+            }, 120000)
+        });
+        form4.addEventListener('submit', (e) => {
+            e.preventDefault();
+            socket.emit('announcement', (`Mindenki vissza a kezdőpontra!`));
+            document.getElementById("vissza").disabled = true
+            setTimeout(() => {
+                document.getElementById("vissza").disabled = false
+            }, 30000)
+        });
+
+        socket.on('announcement', (msg) => {
+          displayMsg(msg, "#fce56f")
+          var audio = new Audio('AnnouncementSound');
+          audio.play();   
+        })
+    </script>
+  </body>
+</html>
