@@ -61,6 +61,10 @@
             audio.play();
         });
 
+        socket.on('silent message', (msg) => {
+            displayMsg(msg, "")
+        });
+
         socket.on('kill', (msg) => {
             displayMsg(msg, "")
             var audio = new Audio('AnnouncementSound');

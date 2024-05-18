@@ -29,6 +29,10 @@ io.on('connection', (socket) => {
         io.emit('chat message', msg);
     });
 
+    socket.on('silent message', (msg) => {
+      io.emit('silent message', msg);
+  });
+
     socket.on('announcement', (msg) => {
       io.emit('announcement', msg);
   });

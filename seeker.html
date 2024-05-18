@@ -25,6 +25,9 @@
     <form id="form4">
         <button id="vissza">VISSZA A KEZDŐPONTRA</button>
     </form>
+    <form id="form5">
+        <button id="szam">VISSZASZÁMLÁLÁS</button>
+    </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io("https://bujocska.onrender.com");
@@ -32,6 +35,7 @@
         const form2 = document.getElementById('form2');
         const form3 = document.getElementById('form3');
         const form4 = document.getElementById('form4');
+        const form5 = document.getElementById('form5');
         const input = document.getElementById('input');
         const messages = document.getElementById('messages');
         
@@ -101,6 +105,19 @@
             setTimeout(() => {
                 document.getElementById("vissza").disabled = false
             }, 30000)
+        });
+
+        form5.addEventListener('submit', (e) => {
+            e.preventDefault();
+            socket.emit('announcement', ("Visszaszámlálás indul!"))
+            for (let i = 60; i >= 1; i--) {
+                socket.emit('silent message', (i));
+            }
+
+            document.getElementById("szam").disabled = true
+            setTimeout(() => {
+                document.getElementById("szam").disabled = false
+            }, 60000)
         });
 
         socket.on('announcement', (msg) => {
